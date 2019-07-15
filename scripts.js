@@ -92,7 +92,7 @@ const songChangeReducer = (state = initialState.currentSongId, action) => {
 }
 
 const rootReducer = this.Redux.combineReducers({
-  currentSongId: songChangeReducer, 
+  currentSongId: songChangeReducer,
   songsById: lyricChangeReducer
 });
 
@@ -221,11 +221,25 @@ const renderSongs = () => {
 
 // CLICK LISTENER
 const userClick = () => {
-  if (store.getState().arrayPosition === store.getState().songLyricsArray.length - 1) {
-    store.dispatch({ type: 'RESTART_SONG' });
+  if (store.getState().songsById[store.getState().currentSongId].arrayPosition === store.getState().songsById[store.getState().currentSongId].songArray.length - 1) {    
+    store.dispatch({
+      type: 'RESTART_SONG',
+      currentSongId: store.getState().currentSongId
+    });
   } else {
-    store.dispatch({ type: 'NEXT_LYRIC' });
+    store.dispatch({
+      type: 'NEXT_LYRIC',
+      currentSongId: store.getState().currentSongId
+    });
   }
+}
+
+const selectSong = (newSongId) => {
+  let action = {
+    type: 'CHANGE_SONG',
+    newSelectedSongId: newSongId
+  }
+  store.dispatch(action);
 }
 
 // SUBSCRIBE TO REDUX STORE
